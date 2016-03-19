@@ -37,20 +37,6 @@ trait Parser<T> {
 
 macro_rules! make {
     
-    (($($elem:ty),+) $name:ident: $ok:ty, $s:ident-> $cnt:block) => {
-        struct $name($($elem),+);
-        impl $name {
-            fn method($s: &mut Stream) -> Result<$ok, ()> {
-                $cnt
-            }
-         }
-         impl Parser<$ok> for $name {
-             fn get_parser(&self) -> &'static Fn(&mut Stream) -> Result<$ok, ()> {
-                 static M: fn(&mut Stream) -> Result<$ok, ()> = $name::method;
-                 &M
-             }
-         }
-    };
     ($name:ident: $ok:ty, $s:ident-> $cnt:block) => (
         struct $name;
         impl $name {
