@@ -75,17 +75,12 @@ make! { Pair: Container, s -> {
     if LeftBrace.get_parser()(s).is_ok() {
         if let Ok(v) = Pair.get_parser()(s) {
             if RightBrace.get_parser()(s).is_ok() {
-                Ok(Container(vec![v]))
-            } else {
-                Err(())
+                return Ok(Container(vec![v]))
             }
-        } else {
-            s.ptr = ptr;
-            Err(())
         }
-    } else {
-        Err(())
     }
+    s.ptr = ptr;
+    return Err(())
 }}
 
 fn main() {
