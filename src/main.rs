@@ -1,12 +1,10 @@
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 struct Container (Vec<Container>);
 
 pub struct Stream {
     ptr: usize,
     cnt: Vec<char>
 }
-
-use std::iter::FromIterator;
 
 impl Stream {
     
@@ -22,8 +20,7 @@ impl Stream {
         self.ptr = ptr
     }
     
-    pub fn new<T> (v: T) -> Stream
-            where T: IntoIterator, Vec<char>: FromIterator<<T as IntoIterator>::Item>  {
+    pub fn new<T: IntoIterator<Item=char>> (v: T) -> Stream {
         Stream {
             cnt: v.into_iter().collect(),
             ptr: 0
@@ -70,7 +67,7 @@ one_char! { LeftBrace: '[' }
 
 one_char! { RightBrace: ']' }
 
-make! {Pair: Container, s -> {
+make! { Pair: Container, s -> {
     let ptr = s.ptr;
     if s.next() == None || s.next() == Some(']') {
         return Ok(Container(Vec::new()))
@@ -81,7 +78,7 @@ make! {Pair: Container, s -> {
                 Ok(Container(vec![v]))
             } else {
                 Err(())
-            }            
+            }
         } else {
             s.ptr = ptr;
             Err(())
